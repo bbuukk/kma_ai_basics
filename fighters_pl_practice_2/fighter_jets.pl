@@ -43,19 +43,19 @@ role(spitfire, dogfight).
 role(spitfire, spy). 
 role(spitfire, bomber). 
 
-devFrom(f15EStrikeEagle, test).
-devFrom(f15J, test).
+dev_from(f15EStrikeEagle, test).
+dev_from(f15J, test).
 
-devFrom(f16XL,f16FightingFalcon).
-devFrom(f2, f16FightingFalcon).
+dev_from(f16XL,f16FightingFalcon).
+dev_from(f2, f16FightingFalcon).
 
-devFrom(f35LightningII,x35JSF).
+dev_from(f35LightningII,x35JSF).
 
-devFrom(spiteful, spitfire).
-devFrom(seafang, spitfire).
-devFrom(attacker, spiteful).
-devFrom(swift, attacker).
-devFrom(supermarine545, swift).
+dev_from(spiteful, spitfire).
+dev_from(seafang, spitfire).
+dev_from(attacker, spiteful).
+dev_from(swift, attacker).
+dev_from(supermarine545, swift).
 
 generation(first, 1940, 1950).
 generation(second, 1955, 1960).
@@ -65,12 +65,11 @@ generation(fifth, 1990, 2000).
 generation(sixth, 2000, 2029).
 
 %find variation of aircraft(jet)
-varOf(X,Y) :- devFrom(X,Z), devFrom(Y,Z), not(Y == X).
+var_of(X,Y) :- dev_from(X,Z), dev_from(Y,Z), not(Y == X).
 
 lightJet(X) :- role(X, dogfight), role(X, spy), role(X, electronicWarfare).
 heavyJet(X) :- role(X, bomber), role(X, electronicWarfare), role(X, sead).
 interceptorJet(X) :- role(X, spy), role(X, electronicWarfare), role(X, sead).
-
 mrca(X) :- % multiporpose fighter
     role(X, dogfight),
      role(X, bomber),
@@ -82,12 +81,12 @@ mrca(X) :- % multiporpose fighter
 
 
 %find origin of modified fighter jet
-origin(X, X) :- not(devFrom(X, Z)), fighter(Z), !. % rewind
-origin(X, R) :- devFrom(X, Y), origin(Y, R).
+origin(X, X) :- not(dev_from(X, Z)), fighter(Z), !. % rewind
+origin(X, R) :- dev_from(X, Y), origin(Y, R).
 
 %find last modifications of fighter jet
-lastMod(X, X) :- not(devFrom(Z, X)), fighter(Z), !. % rewind
-lastMod(X, R) :- devFrom(Y, X), lastMod(Y, R).
+last_mod(X, X) :- not(dev_from(Z, X)), fighter(Z), !. % rewind
+last_mod(X, R) :- dev_from(Y, X), last_mod(Y, R).
 
 % ask teacher why i can't use => and =< likes this:
 %gen(X, G) :- fighter(X), introIn(X, Y), generation(G, B, T), (Y => B), (Y =< T).
@@ -101,4 +100,4 @@ gen(X, G) :-
          ((Y < T) ; (Y == T)). 
 
 % find jets by generation of jet of some Role
-byGenAndRole(X, R, G) :- fighter(X), role(X, R), gen(X, G).
+by_gen_and_role(X, R, G) :- fighter(X), role(X, R), gen(X, G).
