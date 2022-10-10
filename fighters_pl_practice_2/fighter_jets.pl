@@ -1,3 +1,8 @@
+fighter(test0).
+fighter(test1).
+fighter(test2).
+fighter(test3).
+
 
 fighter(f15Eagle). 
 fighter(f15EStrikeEagle).
@@ -16,16 +21,28 @@ fighter(seafung).
 fighter(attacker).
 fighter(swift).
 
-introIn(f15Eagle, 1945).
-introIn(spitfire, 1938).
-introIn(f2, 1972).
-introIn(swift, 1948 ).
-introIn(f16XL, 1982).
-introIn(f16FightingFalcon, 1973).
+intro_in(test0, 1972).
+intro_in(test1, 1945).
+intro_in(test2, 1972).
+intro_in(test3, 1972).
+
+
+intro_in(f15Eagle, 1945).
+intro_in(spitfire, 1938).
+intro_in(f2, 1972).
+intro_in(swift, 1948 ).
+intro_in(f16XL, 1982).
+intro_in(f16FightingFalcon, 1973).
 
 % dogfight is an aerial battle between fighter aircraft conducted at close range
 % cas abr. for close air support
 % sead abr. for suppression of Enemy Air Defenses
+
+role(test0, bomber).
+role(test1, bomber).
+role(test2, bomber).
+role(test3, bomber).
+
 
 role(f35LightningII, dogfight). 
 role(f35LightningII, cas).
@@ -33,6 +50,8 @@ role(f35LightningII, bomber).
 role(f35LightningII, spy). 
 role(f35LightningII, electronicWarfare). 
 role(f35LightningII, sead).
+
+role(f2, bomber).
 
 role(test, dogfight).
 role(test, bomber). 
@@ -67,10 +86,10 @@ generation(sixth, 2000, 2029).
 %find variation of aircraft(jet)
 var_of(X,Y) :- dev_from(X,Z), dev_from(Y,Z), not(Y == X).
 
-lightJet(X) :- role(X, dogfight), role(X, spy), role(X, electronicWarfare).
-heavyJet(X) :- role(X, bomber), role(X, electronicWarfare), role(X, sead).
-interceptorJet(X) :- role(X, spy), role(X, electronicWarfare), role(X, sead).
-mrca(X) :- % multiporpose fighter
+is_lightJet(X) :- role(X, dogfight), role(X, spy), role(X, electronicWarfare).
+is_heavyJet(X) :- role(X, bomber), role(X, electronicWarfare), role(X, sead).
+is_interceptorJet(X) :- role(X, spy), role(X, electronicWarfare), role(X, sead).
+is_mrca(X) :- % multiporpose fighter
     role(X, dogfight),
      role(X, bomber),
       role(X, spy),
@@ -89,15 +108,30 @@ last_mod(X, X) :- not(dev_from(Z, X)), fighter(Z), !. % rewind
 last_mod(X, R) :- dev_from(Y, X), last_mod(Y, R).
 
 % ask teacher why i can't use => and =< likes this:
-%gen(X, G) :- fighter(X), introIn(X, Y), generation(G, B, T), (Y => B), (Y =< T).
+%gen(X, G) :- fighter(X), intro_in(X, Y), generation(G, B, T), (Y => B), (Y =< T).
 
-% find generation of jet or find jets by jeneration
+% find generation of jet or find jets by generation
 gen(X, G) :-
      fighter(X),
-      introIn(X, Y),
+      intro_in(X, Y),
        generation(G, B, T),
         ((Y > B) ; (Y == B)),
          ((Y < T) ; (Y == T)). 
 
 % find jets by generation of jet of some Role
 by_gen_and_role(X, R, G) :- fighter(X), role(X, R), gen(X, G).
+
+%how to "count(fighter(X), N)."
+count([], 0).
+count([_|Xs], N) :- count(Xs, N+1).
+
+bgar([], _, _, []).
+bgar([X], R, G, [X|Res]) :- fighter(X), role(X, R), gen(X, G), bgar([], R, G, Res).
+bgar([X|Xs], R, G, [X|Res]) :-
+     fighter(X),
+      role(X,R),
+       gen(X, G),
+        bgar(Xs, R, G, Res), !.
+bgar([_|Xs], R, G, Res) :- bgar(Xs, R, G, Res).
+%bgar([_|Xs], R, G) :- bgar(Xs, R, G).
+
