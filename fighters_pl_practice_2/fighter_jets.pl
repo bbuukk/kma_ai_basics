@@ -121,17 +121,14 @@ gen(X, G) :-
 % find jets by generation of jet of some Role
 by_gen_and_role(X, R, G) :- fighter(X), role(X, R), gen(X, G).
 
-%how to "count(fighter(X), N)."
-count([], 0).
-count([_|Xs], N) :- count(Xs, N+1).
-
+% find jets by generation of jet of some Role out of array
+% why it suggest so many variants, when we erase !
 bgar([], _, _, []).
-bgar([X], R, G, [X|Res]) :- fighter(X), role(X, R), gen(X, G), bgar([], R, G, Res).
 bgar([X|Xs], R, G, [X|Res]) :-
      fighter(X),
       role(X,R),
        gen(X, G),
-        bgar(Xs, R, G, Res), !.
+        bgar(Xs, R, G, Res).
 bgar([_|Xs], R, G, Res) :- bgar(Xs, R, G, Res).
-%bgar([_|Xs], R, G) :- bgar(Xs, R, G).
+
 
