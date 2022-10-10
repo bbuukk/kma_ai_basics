@@ -1,0 +1,53 @@
+{
+  "exact_match":[
+    {
+      "template": "the hypotenuse is equal to the sum of the squares on the other two sides",
+      "answer": "Yes, but a similar result for non-right triangles is the cosine theorem"
+    },
+    {
+      "template": "how are you?",
+      "answer": "I'm fine, thanks, and you?"
+    },
+    {
+      "template": "what is your name?",
+      "answer": "Siri. What is your name?"
+    },
+    {
+      "template": "i`m sick",
+      "answer": "Really? What are you sick with?"
+    }
+   ],
+    "replacement_template": [
+      {
+        "template": "i`m sleep bad *",
+        "answer": "Tea can help you sleep better"
+      },
+      {
+       "template": "* computers *",
+       "answer": "You have the ability to technique!"
+     },
+      {
+        "template": "* food*",
+        "answer": "What food do you like?"
+      },
+      {
+        "template": "*job*",
+        "answer": "Where do you work?"
+      }
+   ],
+   "matching_rules:": [
+       {
+         "template": "i ? *",
+          "answer": "What else you ? %"
+       },
+      {
+        "template": "yeah, i am confused about *",
+         "answer": "How long * confuses you %"
+      }
+     ],
+   "universal_answers":
+      ["I don't really understand you ",
+        "Don't be so reticent",
+        "Why it matters to you?"
+      ]
+}
