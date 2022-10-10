@@ -121,7 +121,7 @@ gen(X, G) :-
 % find jets by generation of jet of some Role
 by_gen_and_role(X, R, G) :- fighter(X), role(X, R), gen(X, G).
 
-% find jets by generation of jet of some Role out of array
+% find jets by generation of jet of some Role out of array (a)
 % why it suggest so many variants, when we erase !
 bgar([], _, _, []).
 bgar([X|Xs], R, G, [X|Res]) :-
