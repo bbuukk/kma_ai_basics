@@ -83,7 +83,7 @@ generation(fourth, 1970, 1985).
 generation(fifth, 1990, 2000).
 generation(sixth, 2000, 2029).
 
-%find variation of aircraft(jet)
+%find variation of (jet)
 var_of(X,Y) :- dev_from(X,Z), dev_from(Y,Z), not(Y == X).
 
 is_lightJet(X) :- role(X, dogfight), role(X, spy), role(X, electronicWarfare).
@@ -123,7 +123,8 @@ by_gen_and_role(X, R, G) :- fighter(X), role(X, R), gen(X, G).
 
 % find jets by generation of jet of some Role out of array (a)
 % why it suggest so many variants, when we erase !
-bgar([], _, _, []).
+
+bgar([], _, _, []) :- !.
 bgar([X|Xs], R, G, [X|Res]) :-
      fighter(X),
       role(X,R),
