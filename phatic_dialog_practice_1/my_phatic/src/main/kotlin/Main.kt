@@ -1,5 +1,4 @@
 import handlers.ChatBot
-import handlers.TestException
 
 fun main() {
 
@@ -10,16 +9,8 @@ fun main() {
     var answer : String = ""
 
     while(dzhuls.toBeContinued){
-        try{
-
             answer = dzhuls.answerTo(readLine())
             println(answer)
-
-        }catch (exception : TestException){
-            println(exception.message)
-        }
+        return
     }
-
-    println()
-    println("*You ran away*")
 }
