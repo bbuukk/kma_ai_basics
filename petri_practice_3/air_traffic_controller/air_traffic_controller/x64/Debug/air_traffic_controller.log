@@ -1,0 +1,2 @@
+﻿  main.cpp
+C:\mystaff\uni\OSHI\_NaUKMA_oshi_practices\petri_practice_3\air_traffic_controller\air_traffic_controller\main.cpp(26,10): fatal  error C1083: Cannot open include file: 'boost/lambda/lambda.hpp': No such file or directory
