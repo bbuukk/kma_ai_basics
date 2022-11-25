@@ -2,28 +2,45 @@
 
 #include "controller.h"
 
+#include <chrono>
+#include <thread>
 #include <iostream>
+#include <fstream> 
 
-void Controller::process(const Request& req) {
 
-	std::string call_sign = req.get_call_sign();
+void Controller::process() {
+	const char* path = "../../curr_reqs.csv";
+	std::ifstream file(path);
+	while(true) {
 
-	std::cout << req << "\n";
-	std::string request = "Tower Kyiv," + call_sign + "asking for landing permission";
+		/*std::chrono::seconds dura(gen_rand_num(5, 15));
+		std::this_thread::sleep_for(dura);*/
 
-	if (is_runaway_free) {
-		std::cout << call_sign + ", roger" << "\n";
-		std::cout << call_sign + " you are clear to land, " + runway << "\n";
-		
+		Request req = Request::get_request(file);
+
+		if (is_rw_free()) {
+			std::cout << name() << ',' << req.call_sign() << " asking for " << req.status() << " permission" << "\n";
+			approval(req);
+		}
+		else {
+			std::cout << name() << ',' << req.call_sign() << " asking for " << req.status() << " permission" << "\n";
+			denial(req);
+		}
 	}
-	else {
-		std::cout << call_sign + ", roger" << "\n";
-		/*std::cout << call_sign + " negative, copy?" + runway << "\n";*/
-		
-		std::cout << call_sign + " you are clear to land, " + runway + ", number " + std::to_string(seq.size()) << "\n";
-
-	}
+	file.close();
 }
+
+void Controller::approval(const Request& req) {
+	std::cout << req.call_sign() << ',' << green << "AFFIRMATIVE" << reset << "\n";
+	std::cout << req.call_sign() << " ,cleared to land," << this->runaway() << "\n";
+	std::cout << req.call_sign() << "stay with me" << "\n";
+};
+
+void Controller::denial(const Request& req) {
+	std::cout << req.call_sign() + ", NEGATIVE" << "\n";
+	std::cout << req.call_sign() << " you are clear to land" << this->runaway() << "\n";
+};
+
 
 //reback instructions to controller
 //in sequence

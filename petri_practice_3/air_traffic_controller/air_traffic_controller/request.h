@@ -1,9 +1,27 @@
 #pragma once
+//#define NDEBUG
 
 #include <string>
 #include <iostream>
 #include <fstream> 
 #include <vector>
+
+
+static constexpr char red[]("\033[38;2;255;0;0m");
+static constexpr char green[]("\033[38;2;50;205;50m");
+
+static constexpr char yellow[]("\033[38;2;255;255;204m");
+static constexpr char l_yellow[]("\033[38;2;255;255;153m");
+
+static constexpr char blue[]("\033[38;2;176;224;230m");
+
+//static constexpr char rgb[]("\033[38;2;");
+
+static const char faint[]{ 0x1B,'[','2','m','\0' };
+static const char underline[]{ 0x1B,'[','4','m','\0' };
+static const char italics[]{ 0x1B,'[','3','m','\0' };
+static const char bold[]{ 0x1B,'[','1','m','\0' };
+static const char reset[]{ 0x1B,'[','0','m','\0' };
 
 class Request {
 
@@ -12,7 +30,8 @@ public:
         std::string iaco,
         std::string call_sign,
         std::string origin,
-        int altitude,
+        std::string destination,
+        std::string altitute,
         std::string status);
 
     Request(void) = default;
@@ -24,31 +43,34 @@ public:
     Request& operator=(Request&&) noexcept = default;
     Request(Request&&) noexcept = default;
 
-    static std::vector<Request>& get_requests();
+    static Request& get_request(std::ifstream& file);
+    int gen_tol_time();
 
-    inline const std::string& get_airlane_iaco() const { return airlane_iaco; };
-    inline const std::string& get_call_sign() const { return call_sign; };
+    inline const std::string& airlane_iaco() const { return airlane_iaco_; };
+    inline const std::string& call_sign() const { return call_sign_; };
 
-    inline const std::string& get_origin() const { return origin; };
-    inline const std::string& get_destination() const { return destination; };
+    inline const std::string& origin() const { return origin_; };
+    inline const std::string& destination() const { return destination_; };
 
-    inline const int get_altitude() const { return altitude; };
-    inline const std::string& get_status() const { return status; };
+    inline const std::string& altitude() const { return altitude_; };
+    inline const std::string& status() const { return status_; };
 
 private:
     static int count_attitude();
 
-    std::string airlane_iaco;
-    std::string call_sign;
+    std::string airlane_iaco_;
+    std::string call_sign_;
     
-    std::string origin;
-    std::string destination;
+    std::string origin_;
+    std::string destination_;
 
     //std::string time;
-    int altitude;
-    std::string status;
+    std::string altitude_;
+    std::string status_;
 
 };
+
+int gen_rand_num(int from, int to);
 
 std::ostream& operator<<(std::ostream&, const Request&);
 

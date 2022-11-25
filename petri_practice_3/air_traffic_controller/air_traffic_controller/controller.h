@@ -14,19 +14,21 @@ public:
     Controller(void) = default;
     virtual ~Controller() = default;
 
-    void process(const Request&);
-    
-    //
-    //inline const std::string& get_country() const { return country; };
-    //inline const std::string& get_airport_code() const { return airport_code; };
+    void process();
+
+    void denial(const Request& req);
+    void approval(const Request& req);
+
+    inline const std::string& name() const { return name_; };
+    inline const std::string& runaway() const { return runway_; };
+    inline const bool is_rw_free() const { return is_rw_free_; };
 
 private:
 
-    std::vector<std::string> seq;
-    
-    std::string runway = "runway45";
-
-    bool is_runaway_free = true;
+    /*std::vector<std::string> seq;*/
+    std::string name_ = "Tower Kyiv";
+    std::string runway_ = "runway45";
+    bool is_rw_free_ = true;
 
 };
 
