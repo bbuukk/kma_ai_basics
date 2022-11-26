@@ -13,16 +13,17 @@
 
 Request::Request(
     std::string iaco,
-    std::string call_sign_,
-    std::string origin_,
-    int altitude_,
-    std::string status_)
+    std::string call_sign,
+    std::string origin,
+    std::string destination,
+    std::string altitude,
+    std::string status)
     : airlane_iaco_(iaco),
-    call_sign_(call_sign_),
-    origin_(origin_),
-    destination_("MSB"),
-    altitude_(altitude_),
-    status_(status_) {};
+    call_sign_(call_sign),
+    origin_(origin),
+    destination_(destination),
+    altitude_(altitude),
+    status_(status) {};
 
 std::vector<Request>& Request::get_requests() {
     std::vector<Request>* requests = new std::vector<Request>;
@@ -45,9 +46,9 @@ std::vector<Request>& Request::get_requests() {
         (*requests).push_back(
             Request(
                 fields[0], fields[2],
-                fields[4], count_attitude(),
+                fields[4], "MSB",
+                std::to_string(count_attitude()),
                 "landing"));
-
     }
     file.close();
 

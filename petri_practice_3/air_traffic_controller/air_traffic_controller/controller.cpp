@@ -7,38 +7,59 @@
 #include <iostream>
 #include <fstream> 
 
+void Controller::accept(std::ifstream& file) {
+	while (true)
+	{
+		Request req = Request::get_request(file);
+		this->requests.push_back(req);
+	}
+}
 
 void Controller::process() {
-	const char* path = "../../curr_reqs.csv";
-	std::ifstream file(path);
+
+	std::string filepath("../../curr_reqs.csv");
+	std::ifstream file(filepath);
+
+	std::thread([&] () { this->accept(file); });
+
 	while(true) {
 
-		/*std::chrono::seconds dura(gen_rand_num(5, 15));
-		std::this_thread::sleep_for(dura);*/
+		
 
-		Request req = Request::get_request(file);
+		std::cout 
+			<< name() << ", "
+			<< l_yellow << req.call_sign() << reset
+			<< " asking for " << req.status() << " permission"
+			<< "\n";
 
 		if (is_rw_free()) {
-			std::cout << name() << ',' << req.call_sign() << " asking for " << req.status() << " permission" << "\n";
 			approval(req);
+			is_rw_free_ = false;
 		}
 		else {
-			std::cout << name() << ',' << req.call_sign() << " asking for " << req.status() << " permission" << "\n";
 			denial(req);
 		}
+
+		is_rw_free_ = true;
 	}
+
 	file.close();
 }
 
 void Controller::approval(const Request& req) {
-	std::cout << req.call_sign() << ',' << green << "AFFIRMATIVE" << reset << "\n";
-	std::cout << req.call_sign() << " ,cleared to land," << this->runaway() << "\n";
-	std::cout << req.call_sign() << "stay with me" << "\n";
+	std::cout 
+		<< req.call_sign() << ',' 
+		<< green << "AFFIRMATIVE" << reset
+		<< " ,cleared to land, " << this->runaway() 
+		<< "\n";
+	
 };
 
 void Controller::denial(const Request& req) {
-	std::cout << req.call_sign() + ", NEGATIVE" << "\n";
-	std::cout << req.call_sign() << " you are clear to land" << this->runaway() << "\n";
+	std::cout
+		<< req.call_sign() << ','
+		<< green << "NEGATIVE" << reset
+		<< "\n";
 };
 
 

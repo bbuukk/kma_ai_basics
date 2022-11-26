@@ -14,21 +14,18 @@ int main(void) {
     start_reqs_screen();
     std::vector<Request> requests = Request::get_requests();
 
-    const char* path = "../../curr_reqs.csv";
-    std::ofstream file(path);
+    std::string filepath("../../curr_reqs.csv");
+    std::ofstream file(filepath);
 
     for(auto& request : requests)
     {
-        std::chrono::seconds dura(gen_rand_num(5,15));
-        std::this_thread::sleep_for(dura);
         std::cout << request << '\n';
         write_to_csv(request, file);
+
+        std::this_thread::sleep_for(
+            std::chrono::seconds(gen_rand_num(5, 15)));
     }
     file.close();
-
-    /*file.open("test.txt", std::ofstream::out | std::ofstream::trunc);
-    file.close();*/
-
     return 0;
 }
 
@@ -40,7 +37,7 @@ void start_reqs_screen() {
     ZeroMemory(&si, sizeof(si));
     si.cb = sizeof(si);
     ZeroMemory(&pi, sizeof(pi));
-    std::cout << "testing";
+    
     // Start the child process. 
     if (!CreateProcess(L"C:\\mystaff\\uni\\OSHI\\_NaUKMA_oshi_practices\\petri_practice_3\\air_traffic_controller\\x64\\Release\\air_traffic_controller.exe",   // No module name (use command line)
         NULL,          // Command line

@@ -44,6 +44,8 @@ public:
     Request(Request&&) noexcept = default;
 
     static Request& get_request(std::ifstream& file);
+    static std::string& read_request(std::ifstream& file);
+    static std::vector<std::string>& parse_request(std::string& request);
     int gen_tol_time();
 
     inline const std::string& airlane_iaco() const { return airlane_iaco_; };

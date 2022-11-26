@@ -1,7 +1,7 @@
-﻿  request.cpp
+﻿  controller.cpp
   Generating code
-  5 of 477 functions ( 1.0%) were compiled, the rest were copied from previous compilation.
+  2 of 570 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   air_traffic_controller.vcxproj -> C:\mystaff\uni\OSHI\_NaUKMA_oshi_practices\petri_practice_3\air_traffic_controller\x64\Release\air_traffic_controller.exe

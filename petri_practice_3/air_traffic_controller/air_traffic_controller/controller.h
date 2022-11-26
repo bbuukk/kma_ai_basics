@@ -14,6 +14,8 @@ public:
     Controller(void) = default;
     virtual ~Controller() = default;
 
+    
+    void accept(std::ifstream& file);
     void process();
 
     void denial(const Request& req);
@@ -25,6 +27,7 @@ public:
 
 private:
 
+    std::vector<Request> requests;
     /*std::vector<std::string> seq;*/
     std::string name_ = "Tower Kyiv";
     std::string runway_ = "runway45";

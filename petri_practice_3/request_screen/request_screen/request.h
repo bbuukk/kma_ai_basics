@@ -29,10 +29,11 @@ class Request {
 public:
     Request(
         std::string iaco,
-        std::string call_sign_,
-        std::string origin_,
-        int altitude_,
-        std::string status_);
+        std::string call_sign,
+        std::string origin,
+        std::string destination,
+        std::string altitude,
+        std::string status);
 
     Request(void) = default;
     ~Request() = default;
@@ -51,7 +52,7 @@ public:
     inline const std::string& origin() const { return origin_; };
     inline const std::string& destination() const { return destination_; };
 
-    inline const int altitude() const { return altitude_; };
+    inline const std::string& altitude() const { return altitude_; };
     inline const std::string& status() const { return status_; };
 
 private:
@@ -64,7 +65,7 @@ private:
     std::string destination_;
 
     //std::string time;
-    int altitude_;
+    std::string altitude_;
     std::string status_;
 
 };

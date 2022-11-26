@@ -1,15 +1,14 @@
 #pragma once
 
-
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <sstream>
+#include <string>
 #include <chrono>
 #include <ctime>    
 #include <random>
-
-#include <iomanip>
-#include <string>
+#include <thread>
 
 #include "request.h"
 
@@ -21,11 +20,11 @@ Request::Request(
     std::string altitude,
     std::string status)
     : airlane_iaco_(iaco),
-      call_sign_(call_sign_),
-      origin_(origin_),
+      call_sign_(call_sign),
+      origin_(origin),
       destination_(destination),
-      altitude_(altitude_),
-      status_(status_) {};
+      altitude_(altitude),
+      status_(status) {};
 
 int Request::gen_tol_time() {
     return gen_rand_num(5, 10);
@@ -41,30 +40,46 @@ int gen_rand_num(int from, int to) {
 
 Request& Request::get_request(std::ifstream& file) {
 
-	std::string line;
-
-    /*while (true) {
-        if (std::getline(file, line)) {
-            break;
-        }
-        else {
-            continue;
-        }
-    }*/
-
-    while (!std::getline(file, line)) {}
-
-	/*std::vector<std::string> fields;*/
-    std::vector<std::string> fields;
-	std::istringstream iss(line);
-	while (std::getline(iss, line, ';')) {
-		fields.push_back(line);
-	}
-
+    //get not parsed request from file
+	std::string line = read_request(file);
+    std::vector<std::string> attributes =
+        parse_request(line);
+	
     Request* req = new Request(
-        fields[0], fields[1],
-        fields[2], fields[3],
-        fields[4], fields[5]);
+        attributes[0], attributes[1],
+        attributes[2], attributes[3],
+        attributes[4], attributes[5]);
 
     return *(req);
 }
+
+std::string& Request::read_request(std::ifstream& file) {
+
+    if (file.is_open())
+    {
+        std::string* line = new std::string;
+        while (true)
+        {
+            if (std::getline(file, (*line)))
+                return *line;
+            if (!file.eof()) break; // ensure end of read was EOF.
+            file.clear();
+
+            //avoiding cpu hogging
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+    }
+
+    /*return std::string("dila ne bude");*/
+}
+
+std::vector<std::string>& Request::parse_request(std::string& request) {
+    
+    std::vector<std::string>* fields = new std::vector<std::string>;
+    std::istringstream iss(request);
+    while (std::getline(iss, request, ';')) {
+        (*fields).push_back(request);
+    }
+    return *(fields);
+}
+
